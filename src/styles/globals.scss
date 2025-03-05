@@ -1,0 +1,77 @@
+@import "the-new-css-reset/css/reset.css";
+
+.app-container {
+  position: relative;
+}
+
+.scene-canvas {
+  height: 100vh !important;
+  width: 100vw !important;
+}
+
+.left-panel {
+  position: absolute;
+  top: 0;
+  border: 1px solid #000;
+  height: 100vh;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: auto;
+  padding-bottom: 90px;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+    background-color: gray;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    width: 3px;
+    background-color: aqua;
+  }
+}
+
+.primitive-list__item {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  cursor: pointer;
+  padding: 10px 0 10px 10px;
+  border-bottom: 0.5px solid #000;
+}
+
+.primitive-list__item-type {
+  margin-right: 5px;
+}
+
+.primitive-list-item__color {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #000;
+  margin-right: 10px;
+}
+
+.left-panel__buttons {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px 3px 20px 0;
+  position: fixed;
+  bottom: 0;
+  width: 245px;
+}
+
+.left-panel__button {
+  border: 1px solid #000;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.modal-block-wrapper {
+  margin-bottom: 10px;
+}
+
+.modal__select {
+  width: 100%;
+}

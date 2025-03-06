@@ -36,6 +36,7 @@ export const SceneRenderer = () => {
       const newPrimitive = type === 'cube'
         ? new Cube(size, color)
         : new Pyramid(size, height, color);
+      newPrimitive.tryToSetPosition(primitives);
       newPrimitives.push(newPrimitive);
     }
 

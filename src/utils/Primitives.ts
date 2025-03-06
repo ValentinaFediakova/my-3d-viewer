@@ -10,7 +10,7 @@ import {
   BufferAttribute,
   DoubleSide,
 } from "three";
-import { randomColor, randomPosition } from "./helpers";
+import { randomColor, calculateDistance } from "./helpers";
 
 type Vector3 = [number, number, number];
 
@@ -19,9 +19,11 @@ export abstract class Primitive {
   protected color: string;
   public materials: MeshBasicMaterial[] = [];
   public originalColors: string[] = [];
+  public size: number;
 
-  constructor(public type: string, color: string) {
+  constructor(public type: string, color: string, size: number) {
     this.color = color;
+    this.size = size;
   }
 
   setPosition(position: Vector3) {
@@ -30,6 +32,78 @@ export abstract class Primitive {
 
   getPosition() {
     return this.position;
+  }
+
+  public tryToSetPosition(primitives: Primitive[]) {
+    const maxRetries = 100;
+    let retries = 0;
+    let newPosition;
+    let isColliding;
+
+    newPosition = this.generateRandomPosition();
+    isColliding = this.checkCollisions(newPosition, primitives);
+
+    while (retries < maxRetries && isColliding) {
+      newPosition = this.shiftObjectAway(newPosition);
+      isColliding = this.checkCollisions(newPosition, primitives);
+
+      if (!isColliding) {
+        break;
+      }
+
+      retries++;
+    }
+
+    if (retries === maxRetries) {
+      this.placeOutsideArea(primitives);
+    } else {
+      this.setPosition(newPosition);
+    }
+  }
+
+  private shiftObjectAway(
+    position: [number, number, number]
+  ): [number, number, number] {
+    const shiftAmount = 50;
+    const newPos: [number, number, number] = [...position] as [
+      number,
+      number,
+      number
+    ];
+
+    newPos[0] += Math.random() > 0.5 ? shiftAmount : -shiftAmount;
+    newPos[1] += Math.random() > 0.5 ? shiftAmount : -shiftAmount;
+    newPos[2] += Math.random() > 0.5 ? shiftAmount : -shiftAmount;
+
+    return newPos;
+  }
+
+  private generateRandomPosition(): [number, number, number] {
+    return [
+      Math.random() * 200 - 100,
+      Math.random() * 200 - 100,
+      Math.random() * 200 - 100,
+    ];
+  }
+
+  private checkCollisions(
+    position: [number, number, number],
+    primitives: Primitive[]
+  ) {
+    return primitives.some((other) => {
+      const distance = calculateDistance(position, other.getPosition());
+      const combinedSize = this.size + other.size + 100;
+
+      return distance < combinedSize;
+    });
+  }
+
+  private placeOutsideArea(primitives: Primitive[]) {
+    const maxX = Math.max(...primitives.map((p) => p.getPosition()[0]));
+    const maxY = Math.max(...primitives.map((p) => p.getPosition()[1]));
+    const maxZ = Math.max(...primitives.map((p) => p.getPosition()[2]));
+
+    this.setPosition([maxX + 150, maxY + 150, maxZ + 150]);
   }
 
   getColor() {
@@ -56,12 +130,9 @@ export abstract class Primitive {
 }
 
 export class Cube extends Primitive {
-  private size: number;
-
   constructor(size: number, color: string) {
-    super("cube", color);
+    super("cube", color, size);
     this.size = size;
-    this.position = randomPosition();
     const colors = Array(6)
       .fill(0)
       .map(() => randomColor());
@@ -86,10 +157,9 @@ export class Pyramid extends Primitive {
   private height: number;
 
   constructor(radius: number, height: number, color: string) {
-    super("pyramid", color);
+    super("pyramid", color, Math.max(radius, height));
     this.radius = radius;
     this.height = height;
-    this.position = randomPosition();
     const sideColors = Array(4)
       .fill(0)
       .map(() => randomColor());

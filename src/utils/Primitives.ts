@@ -17,9 +17,9 @@ type Vector3 = [number, number, number];
 export abstract class Primitive {
   protected position: Vector3 = [0, 0, 0];
   protected color: string;
+  public size: number;
   public materials: MeshBasicMaterial[] = [];
   public originalColors: string[] = [];
-  public size: number;
 
   constructor(public type: string, color: string, size: number) {
     this.color = color;

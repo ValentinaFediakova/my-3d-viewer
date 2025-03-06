@@ -2,7 +2,7 @@
 
 My 3D Viewer is a web application designed for visualizing and interacting with 3D models in real-time. The app is built using Next.js for rendering the application, Three.js for handling 3D graphics, and TypeScript for improved code quality and maintainability.
 
-### Demo https://my-3d-viewer-5bgpv50iv-valentinafediakovas-projects.vercel.app/
+### Demo https://my-3d-viewer.vercel.app/
 
 ### 🚀 Features:
 

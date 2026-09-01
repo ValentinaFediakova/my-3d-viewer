@@ -1,78 +1,156 @@
-### My 3D Viewer
+# My 3D Viewer
 
-My 3D Viewer is a web application designed for visualizing and interacting with 3D models in real-time. The app is built using Next.js for rendering the application, Three.js for handling 3D graphics, and TypeScript for improved code quality and maintainability.
+An interactive 3D viewer built with **Next.js, React, TypeScript, Three.js, and React Three Fiber**.
 
-### Demo https://my-3d-viewer.vercel.app/
+The application allows users to create groups of 3D primitives, interact with them directly in the scene, and manage them through the UI.
 
-### 🚀 Features:
+🌐 **Live Demo:**  
+[View My 3D Viewer](https://my-3d-viewer.vercel.app/)
 
-🖼️ Load 3D Models: Upload and view 3D models (OBJ, STL, GLTF formats).
+## ✨ Features
 
-🛠️ Interactive 3D objects: Rotate, zoom, and move models in 3D space.
+- Add groups of **cubes** and **pyramids**
+- Configure primitive size, height, and quantity
+- Generate objects at random positions in the 3D scene
+- Collision-aware object placement
+- Random colors for individual primitive faces
+- Select objects directly in the 3D scene
+- Select objects from the UI list
+- Synchronize selection between the scene and the list
+- Highlight the currently selected primitive
+- Clear all objects from the scene
+- Orbit and zoom around the scene with camera controls
+- Real-time updates when new primitives are added
 
-🎨 Customizable objects: Change size, position, and color for each 3D object (cube, pyramid).
+## 🛠 Tech Stack
 
-🔄 Real-time updates: Modify properties and see changes in real-time.
+- **Next.js**
+- **React**
+- **TypeScript**
+- **Three.js**
+- **React Three Fiber**
+- **Drei**
+- **Ant Design**
+- **SCSS**
 
-### 🛠️ Technologies:
+## 🧩 Implementation Details
 
-Next.js — Frontend framework for React-based development.
+The 3D scene is rendered using **React Three Fiber**, while **Drei's OrbitControls** provides interactive camera controls.
 
-Three.js — JavaScript library for creating 3D models and scenes in the browser.
+Each primitive is represented as a mesh and has its own geometry and materials.
 
-TypeScript — A typed superset of JavaScript for enhanced developer experience and maintainability.
+### Cubes
 
-React — For creating the user interface and handling state management.
+Cubes are created with Three.js `BoxGeometry`. Each face receives a randomly generated color.
 
-### 📦 Installation:
+### Pyramids
+
+Pyramid geometry is created manually using `BufferGeometry`, vertex positions, indices, and geometry groups.
+
+This makes it possible to assign separate materials and colors to individual pyramid faces.
+
+### Object Placement
+
+New primitives are assigned random positions in 3D space.
+
+Before a position is accepted, the application checks for collisions with existing objects. If the generated position is too close to another primitive, the object is moved until a suitable position is found.
+
+### Object Selection
+
+Objects can be selected in two ways:
+
+- by clicking a primitive directly in the 3D scene;
+- by selecting it from the list in the UI.
+
+The selected primitive is highlighted, and the selection state is synchronized between the scene and the interface.
+
+## 📁 Project Structure
+
+```text
+src/
+├── app/
+│   ├── layout.tsx
+│   └── page.tsx
+│
+├── components/
+│   ├── AddPrimitiveModal.tsx
+│   ├── Button.tsx
+│   ├── PrimitiveList.tsx
+│   └── SceneRenderer.tsx
+│
+├── styles/
+│   └── globals.scss
+│
+└── utils/
+    ├── Primitives.ts
+    └── helpers.ts
+```
+
+## 🚀 Getting Started
 
 Clone the repository:
-git clone https://github.com/ValentinaFediakova/my-3d-viewer.git
 
-Go to the project folder:
+```bash
+git clone https://github.com/ValentinaFediakova/my-3d-viewer.git
+```
+
+Go to the project directory:
+
+```bash
 cd my-3d-viewer
+```
 
 Install dependencies:
+
+```bash
 npm install
+```
 
-Run the app:
+Start the development server:
+
+```bash
 npm run dev
+```
 
-Visit the application in your browser at http://localhost:3000
+Open:
 
-### This project was implemented as a test task. Here is the task:
+```text
+http://localhost:3000
+```
 
-Create a 1 page web-application with simple UI and interactive 3D viewer that can
-display a few geometric primitives (boxes and pyramids). Possible design is
-demonstrated above. Web-application should satisfy the following functionality:
+## 📦 Production Build
 
-1. User should be able to add a group of the specied primitive type, parameters
-   and number. For example, '+' button that opens a popup menu where user can
-   specify type of the primitive (box or pyramid), primitives parameters (length,
-   width, height) and number of displayed primitives.
-2. Once user accept to add specied primitive:
-   a. Specied primitives should be displayed in the viewer in random places
-   and with random colors. Number and size of primitives should be from
-   user input in point 1.
-   b. List of all displayed primitives should appear in UI with specied position
-   in viewer and marked with assigned color from point 2.a.
-3. User should be able to select an element from the list in UI. Once the element is
-   selected, an appropriate primitive in the viewer should be also visually selected,
-   e.g. change color for specied (from code) one. Selecting another element
-   should reset selection of already selected primitive in viewer, i.e. reset it state
-   before selection.
-4. Adding a new group should add primitives both to list in UI and on scene.
-5. Have possibility to clear the scene and UI list.
-   (\*) Additional optional requirements:
-6. When adding new primitives group, each primitive side (i.e. each side of box or
-   pyramid) should have the random color.
-7. Have possibility to select primitive from the viewer, i.e. clicking on the object in
-   viewer should accept selection both to the viewer and UI list.
-   Requirements to the implementation:
-8. Everything should be written in Typescript.
-9. The frontend should be written using React or Angular and Three.js (it's okay to
-   use wrappers such as react-three-ber)
-10. UI components should be built using components from a third-party component
-    library (Ant Design, Material UI, React Aria, etc.) and customized using CSS.
-11. Each primitive should be represented as a single mesh and created using
-    BufferGeometry
+```bash
+npm run build
+npm run start
+```
+
+## 📝 About the Project
+
+This project was implemented as a **technical test assignment**.
+
+The task was to build a single-page application with an interactive 3D viewer where users can:
+
+- create groups of cubes and pyramids with specified dimensions and quantity;
+- display generated primitives at random positions with random colors;
+- display all created primitives in a UI list;
+- select primitives from the list and highlight the corresponding object in the scene;
+- add multiple groups of primitives;
+- clear the scene and the UI list.
+
+Optional requirements included:
+
+- assigning random colors to individual primitive faces;
+- allowing primitives to be selected directly from the 3D viewer;
+- building primitives as meshes using `BufferGeometry`;
+- using TypeScript, React, Three.js, and a third-party UI component library.
+
+## 💡 What This Project Demonstrates
+
+- Integration of Three.js with React through React Three Fiber
+- Custom geometry creation with `BufferGeometry`
+- Working with multiple materials on a single mesh
+- Managing synchronization between a 3D scene and React UI
+- Interactive object selection
+- Basic collision detection and procedural object placement
+- Building reusable 3D primitive abstractions with TypeScript
